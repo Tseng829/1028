@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幸福空間 Gorgeous Space | 質感居家室內設計與靈感平台</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap');
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FAF8F5; /* 溫暖奶油底色 */
+            color: #2C2825;
+            overflow-x: hidden;
+        }
+
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Glassmorphism Navigation */
+        .nav-blur {
+            background: rgba(253, 250, 246, 0.88);
+            backdrop-filter: blur(14px);
+        }
+
+        /* Clip Path Mask Styles for GSAP */
+        .img-reveal-container {
+            clip-path: polygon(12% 12%, 88% 12%, 88% 88%, 12% 88%);
+            transition: border-radius 0.3s ease;
+        }
+
+        /* Service Cards Pinning Stack */
+        .service-card {
+            will-change: transform, opacity;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5EFE6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E2D4C3;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4BFA7;
+        }
+
+        /* OR Design Custom Cursor Styles - 溫暖琥珀焦糖色 */
+        body {
+            cursor: none;
+        }
+
+        a, button, input {
+            cursor: none;
+        }
+
+        #custom-cursor-dot {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            background-color: #D97706; /* amber-600 */
+            border-radius: 50%;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease-out, background-color 0.2s;
+        }
+
+        #custom-cursor-follower {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 44px;
+            height: 44px;
+            border: 1.5px solid rgba(217, 119, 6, 0.4);
+            background-color: rgba(251, 191, 36, 0.08);
+            border-radius: 50%;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        border-color 0.3s, 
+                        background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            body, a, button, input {
+                cursor: auto;
+            }
+            #custom-cursor-dot, #custom-cursor-follower {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#FAF8F5] text-[#2C2825]">
+
+    <!-- Custom Cursor Elements -->
+    <div id="custom-cursor-dot"></div>
+    <div id="custom-cursor-follower"><span id="cursor-text" class="opacity-0 transition-opacity duration-200"></span></div>
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 w-full z-50 nav-blur border-b border-amber-900/5 transition-all duration-300" id="main-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-500 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-orange-500/20 group-hover:rotate-12 transition-transform">
+                    幸福
+                </div>
+                <span class="text-xl font-bold tracking-wider text-stone-800">幸福空間 <span class="text-xs text-amber-600 font-semibold tracking-normal uppercase ml-1 bg-amber-100/60 px-2 py-0.5 rounded-full">Gorgeous Space</span></span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-stone-600">
+                <a href="#hero" class="hover:text-amber-600 transition-colors">精選案例</a>
+                <a href="#services-pin-wrapper" class="hover:text-amber-600 transition-colors">服務介紹</a>
+                <a href="#ai-assistant" class="hover:text-amber-600 transition-colors">AI 裝修助手</a>
+                <a href="#editorial" class="hover:text-amber-600 transition-colors">靈感專欄</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button class="px-5 py-2.5 text-sm font-semibold text-amber-700 bg-amber-100/70 border border-amber-200 rounded-full hover:bg-amber-600 hover:text-white transition-all shadow-sm">
+                    免費預約諮詢
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: HERO - Warm Entrance (溫暖活潑開場) -->
+    <section id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden pt-16">
+        <!-- Ambient Warm Glow Backgrounds (活潑暖光圈) -->
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-amber-200/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/2 -right-20 w-80 h-80 bg-orange-200/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10">
+            <!-- Text Content -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="overflow-hidden">
+                    <span id="hero-tag" class="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-amber-700 uppercase bg-amber-100/80 px-3.5 py-1.5 rounded-full border border-amber-200 transform translate-y-full">
+                        <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                        台灣 17,000+ 屋主首選裝修靈感平台
+                    </span>
+                </div>
+
+                <div class="overflow-hidden">
+                    <h1 id="hero-title-1" class="text-4xl sm:text-6xl font-bold tracking-tight text-stone-800 leading-tight transform translate-y-full">
+                        讓家的每一吋細節，
+                    </h1>
+                </div>
+                <div class="overflow-hidden">
+                    <h1 id="hero-title-2" class="text-4xl sm:text-6xl font-bold tracking-tight text-amber-600 leading-tight transform translate-y-full italic serif">
+                        都散發幸福的溫度。
+                    </h1>
+                </div>
+
+                <div class="overflow-hidden">
+                    <p id="hero-desc" class="text-stone-600 text-base sm:text-lg max-w-xl font-normal leading-relaxed transform translate-y-full">
+                        嚴選 17,000+ 溫潤實例個案、8,000+ 居家裝修攻略與逾百位嚴選設計團隊，陪您踏實築起心中的理想家。
+                    </p>
+                </div>
+
+                <div id="hero-cta" class="flex flex-wrap gap-4 pt-4 opacity-0">
+                    <a href="#cases-scroll-wrapper" class="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-full font-medium hover:shadow-lg hover:shadow-orange-500/25 transition-all flex items-center gap-2 group active:scale-95">
+                        探索完工靈感
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
+                    </a>
+                    <a href="#ai-assistant" class="px-7 py-4 bg-white/80 border border-amber-200 text-amber-900 rounded-full font-medium hover:bg-amber-50 transition-all flex items-center gap-2 shadow-sm">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 fill-amber-500"></i>
+                        問問 AI 裝修小助手
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Image Reveal -->
+            <div class="lg:col-span-5 relative flex justify-center">
+                <div id="hero-img-box" class="img-reveal-container relative w-full h-[480px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="溫潤木質陽光客廳" class="w-full h-full object-cover scale-125 transform transition-transform duration-1000" id="hero-img">
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-white bg-stone-900/40 backdrop-blur-md p-4 rounded-2xl border border-white/20">
+                        <span class="text-xs font-semibold text-amber-300 uppercase tracking-wider block">✨ 本週靈感推薦</span>
+                        <h3 class="text-base font-bold text-white mt-0.5">日光木質複層小宅｜28坪</h3>
+                        <p class="text-xs text-stone-200 mt-1">富億空間設計 / 陳錦樹</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs text-stone-400 font-medium">
+            <span>向下滾動探索</span>
+            <div class="w-5 h-9 border-2 border-stone-300 rounded-full flex justify-center p-1 bg-white/50">
+                <div class="w-1.5 h-2.5 bg-amber-500 rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: SERVICES - Warm Pinning (暖意活潑服務卡片) -->
+    <section id="services-pin-wrapper" class="relative bg-stone-900 text-white min-h-screen flex items-center py-20 overflow-hidden">
+        <!-- Background Ambient Orange Glow -->
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-amber-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column -->
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-mono rounded-full border border-amber-500/30">[ 全方位築家旅程 ]</span>
+                    <h2 class="text-3xl sm:text-5xl font-bold leading-tight">
+                        專業兼具溫度的服務<br>
+                        <span class="text-amber-400 italic serif">一步步實現憧憬家園</span>
+                    </h2>
+                    <p class="text-stone-300 text-sm sm:text-base font-normal leading-relaxed">
+                        幸福空間結合豐富案例經驗與嚴選團隊，從風格診斷、工程把關到軟裝點綴，全程陪伴您安心築家。
+                    </p>
+
+                    <!-- Interactive Step Indicator -->
+                    <div class="pt-6 border-t border-stone-800 space-y-3">
+                        <div class="flex items-center gap-4 text-sm font-bold">
+                            <span id="service-step-num" class="text-amber-400 text-2xl font-mono">01</span>
+                            <div class="w-full bg-stone-800 h-2 rounded-full overflow-hidden p-0.5 border border-stone-700">
+                                <div id="service-progress-bar" class="bg-gradient-to-r from-amber-500 to-orange-400 h-full w-1/3 rounded-full transition-all duration-300"></div>
+                            </div>
+                            <span class="text-stone-500 font-mono">03</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Cards Stack -->
+                <div class="lg:col-span-7 relative h-[420px] flex items-center justify-center" id="services-cards-container">
+                    
+                    <!-- Service Card 1 -->
+                    <div class="service-card absolute inset-0 bg-stone-800/90 border border-stone-700 p-8 sm:p-10 rounded-3xl shadow-2xl backdrop-blur flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold border border-amber-500/30">
+                                🤝 01
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">100% 嚴選設計師精準配對</h3>
+                            <p class="text-stone-300 text-sm leading-relaxed">
+                                匯聚全台 130+ 位嚴選品質團隊，依據您的家庭成員需求、預算分配與喜好風格，提供溫暖貼心的客製化推薦。
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-stone-700/60 flex items-center justify-between text-xs text-amber-300 font-medium">
+                            <span>包含：風格對接、接案經歷審查、合約安心保障</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-400"></i>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 2 -->
+                    <div class="service-card absolute inset-0 bg-stone-800/90 border border-stone-700 p-8 sm:p-10 rounded-3xl shadow-2xl backdrop-blur flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold border border-amber-500/30">
+                                🛠️ 02
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">老屋新生與格局動線改造</h3>
+                            <p class="text-stone-300 text-sm leading-relaxed">
+                                老屋壁癌、採光不良與管線老化？專業工程團隊提供明亮的採光引進企劃與安全結構重構，讓舊宅重獲溫馨新生。
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-stone-700/60 flex items-center justify-between text-xs text-amber-300 font-medium">
+                            <span>包含：現場會勘健檢、通風採光規劃、工程品質監工</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-400"></i>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 3 -->
+                    <div class="service-card absolute inset-0 bg-stone-800/90 border border-stone-700 p-8 sm:p-10 rounded-3xl shadow-2xl backdrop-blur flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold border border-amber-500/30">
+                                🎨 03
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">溫潤軟裝提案與精準預算控制</h3>
+                            <p class="text-stone-300 text-sm leading-relaxed">
+                                拒絕盲目消費！專業軟裝師精心選搭家具、燈飾與織品色彩，精準掌握每一筆裝修預算，堆疊出家的幸福溫度。
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-stone-700/60 flex items-center justify-between text-xs text-amber-300 font-medium">
+                            <span>包含：家具選品清單、色彩學搭配、預算透明掌控</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-400"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: ARCHITECTURAL SECTION BLUEPRINT (全屋剖面圖互動) -->
+    <section id="building-blueprint-wrapper" class="relative bg-stone-950 text-white min-h-screen py-24 flex items-center overflow-hidden border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-6 w-full">
+            <div class="mb-10">
+                <span class="px-3 py-1 bg-amber-500/10 text-amber-400 text-xs font-mono rounded-full border border-amber-500/20 uppercase">Interactive Blueprint</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3">
+                    解構理想家園｜<span class="text-amber-400 italic serif">全屋空間透視剖面</span>
+                </h2>
+                <p class="text-stone-400 text-sm mt-2">隨向下滾動，動態開展理想空間的基礎結構與生活美學。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- SVG Blueprint Visual Container -->
+                <div class="lg:col-span-7 bg-stone-900/90 border border-stone-800 rounded-3xl p-6 relative shadow-2xl overflow-hidden flex justify-center items-center">
+                    
+                    <svg id="blueprint-svg" class="w-full h-[450px]" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g opacity="0.15" stroke="#A8A29E" stroke-dasharray="4 4">
+                            <line x1="0" y1="150" x2="800" y2="150" />
+                            <line x1="0" y1="300" x2="800" y2="300" />
+                            <line x1="0" y1="450" x2="800" y2="450" />
+                            <line x1="200" y1="0" x2="200" y2="600" />
+                            <line x1="400" y1="0" x2="400" y2="600" />
+                            <line x1="600" y1="0" x2="600" y2="600" />
+                        </g>
+
+                        <!-- PHASE 1: Structure -->
+                        <g id="bp-phase-1">
+                            <rect x="100" y="520" width="600" height="20" fill="#44403C" stroke="#D97706" stroke-width="2"/>
+                            <path class="bp-stroke" d="M150,520 V100 H650 V520" stroke="#F59E0B" stroke-width="4" stroke-linecap="round" fill="none" />
+                            <path class="bp-stroke" d="M150,310 H650" stroke="#F59E0B" stroke-width="3" stroke-dasharray="6 6" fill="none" />
+                            <path class="bp-stroke" d="M120,100 L400,20 L680,100" stroke="#F59E0B" stroke-width="3" fill="none" />
+                            
+                            <circle cx="150" cy="310" r="6" fill="#F59E0B" />
+                            <text x="65" y="315" fill="#F59E0B" font-size="12" font-family="monospace">01.穩固鋼骨結構</text>
+                        </g>
+
+                        <!-- PHASE 2: HVAC System -->
+                        <g id="bp-phase-2" opacity="0">
+                            <path class="bp-stroke" d="M180,140 H620 V160 H180 Z" fill="rgba(245, 158, 11, 0.15)" stroke="#38BDF8" stroke-width="2" />
+                            <path class="bp-stroke" d="M380,160 V310" stroke="#38BDF8" stroke-width="2" stroke-dasharray="4 4" />
+                            <circle cx="250" cy="160" r="4" fill="#38BDF8" />
+                            <circle cx="400" cy="160" r="4" fill="#38BDF8" />
+                            <circle cx="550" cy="160" r="4" fill="#38BDF8" />
+                            <rect x="180" y="160" width="440" height="130" fill="rgba(56, 189, 248, 0.08)" rx="8" />
+
+                            <circle cx="620" cy="150" r="6" fill="#38BDF8" />
+                            <text x="635" y="155" fill="#38BDF8" font-size="12" font-family="monospace">02.全熱交換空氣巡航</text>
+                        </g>
+
+                        <!-- PHASE 3: Living Interior Warmth -->
+                        <g id="bp-phase-3" opacity="0">
+                            <rect x="200" y="440" width="140" height="70" rx="12" fill="rgba(217, 119, 6, 0.25)" stroke="#F59E0B" stroke-width="2"/>
+                            <rect x="500" y="400" width="20" height="110" fill="#57534E" stroke="#F59E0B" stroke-width="2"/>
+                            <rect x="440" y="430" width="10" height="80" fill="#F59E0B" rx="2"/>
+                            <path d="M180,510 L180,420 L160,435" stroke="#F59E0B" stroke-width="2" fill="none" />
+                            <circle cx="160" cy="435" r="9" fill="#FBBF24" opacity="0.8"/>
+                            <rect x="160" y="320" width="480" height="190" fill="rgba(245, 158, 11, 0.1)" rx="16"/>
+
+                            <circle cx="270" cy="440" r="6" fill="#FBBF24" />
+                            <text x="215" y="415" fill="#FBBF24" font-size="12" font-family="monospace">03.溫潤軟裝與溫暖採光</text>
+                        </g>
+                    </svg>
+
+                    <div class="absolute bottom-4 right-6 text-xs font-mono text-stone-500 uppercase tracking-widest">
+                        Gorgeous Space Blueprint
+                    </div>
+                </div>
+
+                <!-- Text Right Column -->
+                <div class="lg:col-span-5 relative h-[380px] flex items-center" id="bp-text-container">
+                    
+                    <div class="bp-text-step absolute inset-0 flex flex-col justify-center space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full w-max text-amber-400 text-xs font-mono">
+                            STEP 01 / 安全結構
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white">耐用結構與安心防潮工程</h3>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            幸福空間為您嚴格把關鋼骨補強、防潮防水層與壁癌根治工程，為幸福生活奠定安心耐用的基礎。
+                        </p>
+                    </div>
+
+                    <div class="bp-text-step absolute inset-0 flex flex-col justify-center space-y-4 opacity-0">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-sky-500/10 border border-sky-500/30 rounded-full w-max text-sky-400 text-xs font-mono">
+                            STEP 02 / 隱蔽智慧管線
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white">全熱交換與智慧空氣循環</h3>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            將管線與全熱交換器巧妙隱藏於天花板，維持 24 小時清爽乾淨的室內空氣品質與恆溫舒適感。
+                        </p>
+                    </div>
+
+                    <div class="bp-text-step absolute inset-0 flex flex-col justify-center space-y-4 opacity-0">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-400/10 border border-amber-400/30 rounded-full w-max text-amber-300 text-xs font-mono">
+                            STEP 03 / 溫潤生活美學
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white">溫馨軟裝佈置與彈性收納</h3>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            注入家的靈魂！透過溫暖木質、暖黃光影與人性化收納設計，打造親朋好友齊聚的歡樂生活場景。
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: AI ASSISTANT (親切活潑 AI 問答) -->
+    <section id="ai-assistant" class="py-28 bg-[#FAF8F5] relative overflow-hidden">
+        <!-- Decorative Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-amber-200/40 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-xl mx-auto space-y-3 mb-8">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-bold">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-600 fill-amber-600"></i>
+                    AI 智慧問答小助手
+                </span>
+                <h2 class="text-3xl font-bold text-stone-800">裝修難題？讓 AI 小幫手來解答！</h2>
+                <p class="text-stone-600 text-sm">即時搜尋 17,000+ 案例與專欄，為您量身解答預算與風格疑難。</p>
+            </div>
+
+            <div class="bg-white/90 border border-amber-200/80 rounded-3xl p-6 sm:p-8 shadow-xl shadow-amber-900/5 backdrop-blur space-y-6">
+                <!-- Search Form -->
+                <form id="ai-search-form" class="flex items-center gap-3 bg-[#FAF8F5] border border-amber-200 rounded-2xl p-3 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-200 transition-all">
+                    <i data-lucide="message-square" class="w-5 h-5 text-amber-600 flex-shrink-0 ml-2"></i>
+                    <input type="text" id="ai-input" placeholder="試試輸入：北歐風 20坪 預算 100 萬怎麼分配？" class="bg-transparent border-none outline-none text-stone-800 w-full placeholder-stone-400 text-sm">
+                    <button type="submit" id="ai-submit-btn" class="bg-amber-600 hover:bg-amber-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 flex-shrink-0 active:scale-95 shadow-md shadow-amber-600/20">
+                        <span>問問 AI</span>
+                        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                    </button>
+                </form>
+
+                <!-- Chips -->
+                <div class="flex flex-wrap items-center gap-2 text-xs text-stone-600">
+                    <span class="text-stone-400 font-medium">熱門疑問：</span>
+                    <button class="ai-chip bg-amber-50 hover:bg-amber-100 text-amber-900 px-3.5 py-1.5 rounded-full border border-amber-200/80 transition-all active:scale-95" data-prompt="有擅長老屋翻新的設計師嗎？">老屋翻新設計師推薦</button>
+                    <button class="ai-chip bg-amber-50 hover:bg-amber-100 text-amber-900 px-3.5 py-1.5 rounded-full border border-amber-200/80 transition-all active:scale-95" data-prompt="第一次找設計師要準備什麼？">第一次找設計師準備事項</button>
+                    <button class="ai-chip bg-amber-50 hover:bg-amber-100 text-amber-900 px-3.5 py-1.5 rounded-full border border-amber-200/80 transition-all active:scale-95" data-prompt="20-30坪預算怎麼分配？">20-30坪裝修預算規劃</button>
+                </div>
+
+                <!-- AI Response Box -->
+                <div id="ai-response-box" class="hidden bg-[#FAF8F5] border border-amber-300/80 rounded-2xl p-6 space-y-4 animate-fade-in text-stone-800 shadow-inner">
+                    <div class="flex items-center justify-between pb-3 border-b border-amber-200/60">
+                        <div class="flex items-center gap-2 text-amber-700 text-xs font-bold">
+                            <i data-lucide="bot" class="w-4 h-4 text-amber-600"></i>
+                            <span>幸福空間 AI 智慧裝修顧問</span>
+                        </div>
+                        <span id="ai-status" class="text-[10px] text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full font-medium">分析完畢</span>
+                    </div>
+
+                    <div id="ai-loading" class="hidden flex items-center gap-3 text-stone-500 py-4">
+                        <div class="flex gap-1.5">
+                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-full animate-bounce"></div>
+                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                        </div>
+                        <span class="text-xs">正在翻閱 17,000+ 案例資料庫...</span>
+                    </div>
+
+                    <div id="ai-answer-text" class="text-sm leading-relaxed space-y-3 font-normal text-stone-700"></div>
+
+                    <div id="ai-recommendations" class="pt-4 border-t border-amber-200/60 flex flex-wrap items-center justify-between gap-3 text-xs">
+                        <span class="text-stone-500 font-medium">💡 幸福小建議：</span>
+                        <div class="flex gap-2">
+                            <a href="#services-pin-wrapper" class="px-3.5 py-1.5 bg-amber-600 text-white rounded-lg hover:bg-amber-500 transition-colors font-medium">
+                                免費媒合專屬設計師
+                            </a>
+                            <a href="#cases-scroll-wrapper" class="px-3.5 py-1.5 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 transition-colors font-medium">
+                                觀看熱門個案
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: FEATURED CASES (溫暖質感案例卡片) -->
+    <section id="cases-scroll-wrapper" class="py-20 bg-stone-100/70 overflow-hidden relative border-t border-stone-200/60">
+        <div class="max-w-7xl mx-auto px-6 mb-8 flex justify-between items-end">
+            <div>
+                <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-1">Warm Inspirations</span>
+                <h2 class="text-3xl font-bold text-stone-900">溫馨精選完工案例</h2>
+            </div>
+            <span class="text-xs text-stone-500 hidden sm:block">← 橫向滑動探索更多家園故事 →</span>
+        </div>
+
+        <div id="horizontal-track" class="flex gap-8 pl-6 pr-24 w-max items-center">
+            
+            <!-- Card 1 -->
+            <div class="case-card w-[380px] md:w-[460px] bg-white rounded-3xl overflow-hidden shadow-lg border border-stone-200/80 group flex-shrink-0 hover:-translate-y-2 transition-all duration-300" data-cursor="點擊探索">
+                <div class="relative h-72 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="拾光軌跡" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <span class="absolute top-4 left-4 bg-amber-900/80 text-white text-xs px-3.5 py-1 rounded-full backdrop-blur font-medium">美式風 ・ 96 坪</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-stone-900 group-hover:text-amber-600 transition-colors">拾光軌跡｜96 坪溫潤美式大宅</h3>
+                    <p class="text-sm text-stone-500 mt-2 line-clamp-2">優雅暖色線板與日光底蘊，織就大坪數宅邸的從容與溫暖。</p>
+                    <div class="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-400">
+                        <span class="font-medium text-stone-600">張馨 & 瀚觀室內設計</span>
+                        <span class="text-amber-600 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">查看案例 <i data-lucide="chevron-right" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="case-card w-[380px] md:w-[460px] bg-white rounded-3xl overflow-hidden shadow-lg border border-stone-200/80 group flex-shrink-0 hover:-translate-y-2 transition-all duration-300" data-cursor="點擊探索">
+                <div class="relative h-72 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80" alt="愛馬仕質感現代宅" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <span class="absolute top-4 left-4 bg-amber-900/80 text-white text-xs px-3.5 py-1 rounded-full backdrop-blur font-medium">現代風 ・ 12 坪</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-stone-900 group-hover:text-amber-600 transition-colors">新北板橋｜12 坪愛馬仕暖橘質感小宅</h3>
+                    <p class="text-sm text-stone-500 mt-2 line-clamp-2">精巧坪數下的極致機能，暖橘色彩點亮活潑溫馨日常。</p>
+                    <div class="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-400">
+                        <span class="font-medium text-stone-600">郡品室內設計</span>
+                        <span class="text-amber-600 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">查看案例 <i data-lucide="chevron-right" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="case-card w-[380px] md:w-[460px] bg-white rounded-3xl overflow-hidden shadow-lg border border-stone-200/80 group flex-shrink-0 hover:-translate-y-2 transition-all duration-300" data-cursor="點擊探索">
+                <div class="relative h-72 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80" alt="木系北歐風" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <span class="absolute top-4 left-4 bg-amber-900/80 text-white text-xs px-3.5 py-1 rounded-full backdrop-blur font-medium">北歐風 ・ 24 坪</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-stone-900 group-hover:text-amber-600 transition-colors">暖木北歐風｜交織一家人的歡笑氣息</h3>
+                    <p class="text-sm text-stone-500 mt-2 line-clamp-2">老屋新生，透過大量溫潤木質與通透採光，重塑溫暖生活步調。</p>
+                    <div class="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-400">
+                        <span class="font-medium text-stone-600">郡品室內設計</span>
+                        <span class="text-amber-600 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">查看案例 <i data-lucide="chevron-right" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="case-card w-[380px] md:w-[420px] bg-gradient-to-br from-amber-600 to-orange-600 text-white rounded-3xl overflow-hidden shadow-xl flex flex-col justify-center p-10 flex-shrink-0">
+                <span class="text-xs text-amber-200 font-semibold uppercase tracking-wider mb-2">MORE INSPIRATIONS</span>
+                <h3 class="text-2xl font-bold mb-4">探索更多 17,000+ 個真實完工案例</h3>
+                <p class="text-amber-100 text-sm mb-8 leading-relaxed">按照坪數、風格、預算或地區，輕鬆找到您最想入住的範本。</p>
+                <a href="#" class="inline-flex items-center justify-center px-6 py-3.5 bg-white text-amber-900 hover:bg-amber-50 rounded-full text-sm font-bold transition-all w-max shadow-md active:scale-95">
+                    看全部完工案例
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 4: EDITORIAL (活潑簡潔閱讀專欄) -->
+    <section id="editorial" class="py-24 bg-[#FAF8F5]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between md:items-end mb-12 gap-4">
+                <div>
+                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest block mb-2">Lifestyle & Design</span>
+                    <h2 class="text-3xl font-bold text-stone-900">居家靈感與裝修攻略專欄</h2>
+                </div>
+                <a href="#" class="text-sm font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1 transition-colors">
+                    閱讀更多實用文章 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="article-grid">
+                <!-- Article 1 -->
+                <article class="article-item group cursor-pointer bg-white p-5 rounded-3xl shadow-sm border border-stone-200/60 hover:shadow-md transition-all">
+                    <div class="relative h-56 rounded-2xl overflow-hidden mb-4 bg-stone-100">
+                        <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80" alt="開放式廚房" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-amber-100 text-amber-900 text-xs px-3 py-1 rounded-full font-bold">主題企劃</span>
+                    </div>
+                    <span class="text-xs text-stone-400">幸福廚房提案</span>
+                    <h3 class="text-base font-bold text-stone-900 group-hover:text-amber-600 transition-colors mt-1">夢幻廚房不能沒有它！夢幻中島吧檯點亮親友溫暖聚會</h3>
+                    <p class="text-xs text-stone-500 mt-2 line-clamp-2">開放式中島不僅增加收納機能，更是家人邊料理邊聊天的歡樂 core 核心。</p>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="article-item group cursor-pointer bg-white p-5 rounded-3xl shadow-sm border border-stone-200/60 hover:shadow-md transition-all">
+                    <div class="relative h-56 rounded-2xl overflow-hidden mb-4 bg-stone-100">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" alt="客廳收納" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-amber-100 text-amber-900 text-xs px-3 py-1 rounded-full font-bold">居家設計</span>
+                    </div>
+                    <span class="text-xs text-stone-400">收納靈感</span>
+                    <h3 class="text-base font-bold text-stone-900 group-hover:text-amber-600 transition-colors mt-1">追劇放鬆最舒服！客廳收納好物：打造放鬆沙發大空間</h3>
+                    <p class="text-xs text-stone-500 mt-2 line-clamp-2">告別雜亂客廳！利用聰明邊桌與隱藏式儲物箱，讓居家空間瞬間放大 1.5 倍。</p>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="article-item group cursor-pointer bg-white p-5 rounded-3xl shadow-sm border border-stone-200/60 hover:shadow-md transition-all">
+                    <div class="relative h-56 rounded-2xl overflow-hidden mb-4 bg-stone-100">
+                        <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=800&q=80" alt="玄關鞋櫃" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-amber-100 text-amber-900 text-xs px-3 py-1 rounded-full font-bold">裝修密技</span>
+                    </div>
+                    <span class="text-xs text-stone-400">實用尺寸</span>
+                    <h3 class="text-base font-bold text-stone-900 group-hover:text-amber-600 transition-colors mt-1">鞋櫃塞滿還不夠？輕鬆打造超高 CP 值黃金深度與懸空層板</h3>
+                    <p class="text-xs text-stone-500 mt-2 line-clamp-2">層板高度抓 15 公分、深度 35-40 公分，掌握專家建議尺寸不浪費每一吋空間。</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: FOOTER (溫馨落腳點) -->
+    <footer class="bg-stone-900 text-white relative overflow-hidden pt-20 pb-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <!-- Closing CTA -->
+            <div id="footer-brand-callout" class="text-center max-w-3xl mx-auto mb-20 space-y-6">
+                <span class="px-3.5 py-1 bg-amber-500/20 text-amber-300 text-xs font-mono rounded-full border border-amber-500/30 uppercase">[ Ready To Build Your Home ]</span>
+                <h2 class="text-3xl sm:text-5xl font-bold leading-tight">
+                    準備好開啟您的<br><span class="text-amber-400 italic serif">幸福空間</span> 旅程了嗎？
+                </h2>
+                <p class="text-stone-300 text-base font-normal">
+                    從免費諮詢、預算規劃到精準設計團隊媒合，幸福空間全程陪伴您完成築家願景。
+                </p>
+                <div class="pt-4 flex justify-center gap-4">
+                    <button class="px-9 py-4 bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-500 hover:to-orange-400 text-white font-bold rounded-full shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-0.5 active:scale-95">
+                        免費預約裝修諮詢
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pb-12 border-b border-stone-800 text-xs text-stone-400">
+                <div class="col-span-2">
+                    <a href="#" class="text-lg font-bold text-white tracking-wider flex items-center gap-2 mb-4">
+                        <div class="w-7 h-7 rounded-lg bg-amber-600 flex items-center justify-center text-white text-xs font-bold">幸福</div>
+                        幸福空間 Gorgeous Space
+                    </a>
+                    <p class="text-stone-400 max-w-sm leading-relaxed mb-4">
+                        台灣最大室內設計與裝修影音平台，提供真實完工案例、專業設計團隊評估與溫馨居家知識。
+                    </p>
+                    <p class="text-stone-400">客服免費專線：0800-007-600</p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">熱門風格</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-amber-400">溫潤北歐風</a></li>
+                        <li><a href="#" class="hover:text-amber-400">現代極簡風</a></li>
+                        <li><a href="#" class="hover:text-amber-400">美式輕奢風</a></li>
+                        <li><a href="#" class="hover:text-amber-400">日式無印風</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">服務項目</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-amber-400">找室內設計師</a></li>
+                        <li><a href="#" class="hover:text-amber-400">老屋翻新企劃</a></li>
+                        <li><a href="#" class="hover:text-amber-400">小坪數放大術</a></li>
+                        <li><a href="#" class="hover:text-amber-400">預售屋客變</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">關於我們</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-amber-400">品牌故事</a></li>
+                        <li><a href="#" class="hover:text-amber-400">設計師入駐</a></li>
+                        <li><a href="#" class="hover:text-amber-400">影音節目頻道</a></li>
+                        <li><a href="#" class="hover:text-amber-400">隱私權條款</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-stone-500">
+                <p>© 2026 幸福空間 Gorgeous Space. All Rights Reserved.</p>
+                <p class="mt-2 sm:mt-0">Motion Concept inspired by OR Design Studio GSAP Interactivity</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP Animation Scripts -->
+    <script>
+        lucide.createIcons();
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. OPENING ANIMATION
+            const heroTl = gsap.timeline({ defaults: { ease: "power4.out", duration: 1.2 } });
+
+            heroTl
+                .to("#hero-tag", { y: "0%", duration: 0.8 })
+                .to("#hero-title-1", { y: "0%" }, "-=0.6")
+                .to("#hero-title-2", { y: "0%" }, "-=0.8")
+                .to("#hero-desc", { y: "0%", duration: 1 }, "-=0.8")
+                .to("#hero-cta", { opacity: 1, duration: 0.6 }, "-=0.4")
+                .to("#hero-img-box", { 
+                    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", 
+                    duration: 1.4, 
+                    ease: "power3.inOut" 
+                }, "-=1.2")
+                .to("#hero-img", { scale: 1, duration: 1.6, ease: "power2.out" }, "-=1.4");
+
+            // 2. PARALLAX
+            gsap.to("#hero-img", {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // 3. SERVICE CARDS PINNING
+            const cards = gsap.utils.toArray(".service-card");
+            const stepNum = document.getElementById("service-step-num");
+            const progressBar = document.getElementById("service-progress-bar");
+
+            gsap.set(cards, {
+                y: (i) => i === 0 ? 0 : 100,
+                opacity: (i) => i === 0 ? 1 : 0,
+                zIndex: (i) => i + 1
+            });
+
+            const serviceTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#services-pin-wrapper",
+                    start: "top top",
+                    end: "+=250%",
+                    pin: true,
+                    scrub: 0.8,
+                    onUpdate: (self) => {
+                        const progress = self.progress;
+                        if (progress < 0.33) {
+                            stepNum.textContent = "01";
+                            progressBar.style.width = "33%";
+                        } else if (progress < 0.66) {
+                            stepNum.textContent = "02";
+                            progressBar.style.width = "66%";
+                        } else {
+                            stepNum.textContent = "03";
+                            progressBar.style.width = "100%";
+                        }
+                    }
+                }
+            });
+
+            serviceTl
+                .to(cards[0], { y: -100, opacity: 0, duration: 1 }, "+=0.4")
+                .to(cards[1], { y: 0, opacity: 1, duration: 1 }, "<")
+                .to(cards[1], { y: -100, opacity: 0, duration: 1 }, "+=0.8")
+                .to(cards[2], { y: 0, opacity: 1, duration: 1 }, "<")
+                .to({}, { duration: 0.5 });
+
+            // 3.5 ARCHITECTURAL BLUEPRINT
+            const bpPhase2 = document.getElementById("bp-phase-2");
+            const bpPhase3 = document.getElementById("bp-phase-3");
+            const bpTextSteps = gsap.utils.toArray(".bp-text-step");
+
+            const bpTimeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#building-blueprint-wrapper",
+                    start: "top top",
+                    end: "+=220%",
+                    pin: true,
+                    scrub: 0.8,
+                }
+            });
+
+            bpTimeline
+                .to(bpPhase2, { opacity: 1, duration: 1 })
+                .to(bpTextSteps[0], { opacity: 0, y: -20, duration: 0.8 }, "<")
+                .to(bpTextSteps[1], { opacity: 1, y: 0, duration: 0.8 }, "<+=0.2")
+                .to(bpPhase3, { opacity: 1, duration: 1 }, "+=0.5")
+                .to(bpTextSteps[1], { opacity: 0, y: -20, duration: 0.8 }, "<")
+                .to(bpTextSteps[2], { opacity: 1, y: 0, duration: 0.8 }, "<+=0.2")
+                .to({}, { duration: 0.5 });
+
+            // 4. HORIZONTAL SCROLL
+            const track = document.getElementById("horizontal-track");
+            gsap.to(track, {
+                x: () => -(track.scrollWidth - window.innerWidth + 100),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#cases-scroll-wrapper",
+                    start: "top top+=80",
+                    end: () => `+=${track.scrollWidth - window.innerWidth}`,
+                    pin: true,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                }
+            });
+
+            // 5. ARTICLE GRID STAGGER REVEAL (修正隱藏問題)
+            gsap.fromTo(".article-item", 
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    stagger: 0.15,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: "#editorial",
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                }
+            );
+
+            // 重新刷新 ScrollTrigger 以精準計算前方 pinned 區塊過後的正確位置
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+            }, 500);
+
+            // 6. FOOTER CALLOUT
+            gsap.from("#footer-brand-callout", {
+                scale: 0.95,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#footer-brand-callout",
+                    start: "top 85%",
+                }
+            });
+
+            // 7. OR DESIGN CUSTOM CURSOR
+            const cursorDot = document.getElementById("custom-cursor-dot");
+            const cursorFollower = document.getElementById("custom-cursor-follower");
+            const cursorText = document.getElementById("cursor-text");
+
+            if (cursorDot && cursorFollower) {
+                let mouseX = window.innerWidth / 2;
+                let mouseY = window.innerHeight / 2;
+                let followerX = mouseX;
+                let followerY = mouseY;
+
+                window.addEventListener("mousemove", (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    gsap.set(cursorDot, { x: mouseX, y: mouseY });
+                });
+
+                gsap.ticker.add(() => {
+                    const dt = 1 - Math.pow(1 - 0.25, gsap.ticker.deltaRatio());
+                    followerX += (mouseX - followerX) * dt;
+                    followerY += (mouseY - followerY) * dt;
+                    gsap.set(cursorFollower, { x: followerX, y: mouseY });
+                });
+
+                const interactiveElements = document.querySelectorAll("a, button, input, .ai-chip");
+                interactiveElements.forEach((el) => {
+                    el.addEventListener("mouseenter", () => {
+                        gsap.to(cursorFollower, {
+                            width: 54,
+                            height: 54,
+                            backgroundColor: "rgba(245, 158, 11, 0.18)",
+                            borderColor: "rgba(217, 119, 6, 0.8)",
+                            duration: 0.25
+                        });
+                    });
+                    el.addEventListener("mouseleave", () => {
+                        gsap.to(cursorFollower, {
+                            width: 44,
+                            height: 44,
+                            backgroundColor: "rgba(251, 191, 36, 0.08)",
+                            borderColor: "rgba(217, 119, 6, 0.4)",
+                            duration: 0.25
+                        });
+                    });
+                });
+
+                const caseCards = document.querySelectorAll("[data-cursor='點擊探索']");
+                caseCards.forEach((card) => {
+                    card.addEventListener("mouseenter", () => {
+                        cursorText.textContent = "點擊探索";
+                        cursorText.classList.remove("opacity-0");
+                        gsap.to(cursorFollower, {
+                            width: 72,
+                            height: 72,
+                            backgroundColor: "rgba(217, 119, 6, 0.95)",
+                            borderColor: "#ffffff",
+                            duration: 0.25
+                        });
+                    });
+                    card.addEventListener("mouseleave", () => {
+                        cursorText.classList.add("opacity-0");
+                        cursorText.textContent = "";
+                        gsap.to(cursorFollower, {
+                            width: 44,
+                            height: 44,
+                            backgroundColor: "rgba(251, 191, 36, 0.08)",
+                            borderColor: "rgba(217, 119, 6, 0.4)",
+                            duration: 0.25
+                        });
+                    });
+                });
+            }
+
+            // 8. AI ENGINE
+            const aiForm = document.getElementById("ai-search-form");
+            const aiInput = document.getElementById("ai-input");
+            const aiResponseBox = document.getElementById("ai-response-box");
+            const aiLoading = document.getElementById("ai-loading");
+            const aiAnswerText = document.getElementById("ai-answer-text");
+            const aiChips = document.querySelectorAll(".ai-chip");
+            const aiStatus = document.getElementById("ai-status");
+
+            const aiKnowledgeBase = [
+                {
+                    keywords: ["老屋", "老宅", "壁癌", "翻新", "中古屋"],
+                    content: `
+                        <p class="font-bold text-amber-800">🏡 老屋翻新三大溫馨要點：</p>
+                        <ul class="list-disc pl-5 space-y-1.5 text-stone-700">
+                            <li><strong class="text-stone-900">基礎工程優先：</strong> 20 年以上老宅建議水電管線重拉與防水層重做，住得更安心。</li>
+                            <li><strong class="text-stone-900">引進溫暖自然光：</strong> 透過玻璃隔間或開放式客餐廳，讓陽光灑滿每個角落。</li>
+                            <li><strong class="text-stone-900">嚴選老屋專家：</strong> 幸福空間團隊累積超過 100+ 老宅煥新成功案例！</li>
+                        </ul>
+                    `
+                },
+                {
+                    keywords: ["第一次", "準備", "流程", "注意", "交屋"],
+                    content: `
+                        <p class="font-bold text-amber-800">📋 第一次找設計師準備小指南：</p>
+                        <ul class="list-disc pl-5 space-y-1.5 text-stone-700">
+                            <li><strong class="text-stone-900">1. 平面圖或格局圖：</strong> 幫助設計師迅速了解空間格局。</li>
+                            <li><strong class="text-stone-900">2. 預算範疇：</strong> 方便設計師精準挑選建材與傢俱。</li>
+                            <li><strong class="text-stone-900">3. 喜愛風格照片 3-5 張：</strong> 可在幸福空間「精選案例」先按讚收藏！</li>
+                        </ul>
+                    `
+                },
+                {
+                    keywords: ["預算", "20坪", "30坪", "費用", "錢", "100萬", "北歐"],
+                    content: `
+                        <p class="font-bold text-amber-800">💡 20-30 坪裝修預算黃金分配：</p>
+                        <ul class="list-disc pl-5 space-y-1.5 text-stone-700">
+                            <li><strong class="text-stone-900">新成屋：</strong> 約 6～9 萬/坪，著重於系統收納與溫暖軟裝。</li>
+                            <li><strong class="text-stone-900">老屋翻新：</strong> 約 10～14 萬/坪，包含基礎水電工程與壁癌處理。</li>
+                            <li><strong class="text-stone-900">黃金比例：</strong> 硬裝 65% + 軟裝傢俱 20% + 家電 15%。</li>
+                        </ul>
+                    `
+                }
+            ];
+
+            function handleAiQuery(queryText) {
+                if (!queryText.trim()) return;
+
+                aiResponseBox.classList.remove("hidden");
+                aiLoading.classList.remove("hidden");
+                aiAnswerText.innerHTML = "";
+                aiStatus.textContent = "AI 檢索中...";
+
+                aiResponseBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+                setTimeout(() => {
+                    aiLoading.classList.add("hidden");
+                    aiStatus.textContent = "分析完畢";
+
+                    const matched = aiKnowledgeBase.find(item => 
+                        item.keywords.some(kw => queryText.toLowerCase().includes(kw))
+                    );
+
+                    if (matched) {
+                        aiAnswerText.innerHTML = matched.content;
+                    } else {
+                        aiAnswerText.innerHTML = `
+                            <p class="font-bold text-amber-800">🔍 針對「${queryText}」的溫馨建議：</p>
+                            <p class="text-stone-700">幸福空間已為您檢索相關靈感，建議在規劃時優先考慮採光與動線。歡迎點擊下方按鈕預約免費諮詢，由專人為您推薦最適合的設計團隊！</p>
+                        `;
+                    }
+                    lucide.createIcons();
+                }, 700);
+            }
+
+            aiForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                handleAiQuery(aiInput.value);
+            });
+
+            aiChips.forEach(chip => {
+                chip.addEventListener("click", () => {
+                    const prompt = chip.getAttribute("data-prompt");
+                    aiInput.value = prompt;
+                    handleAiQuery(prompt);
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
